@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./Navbar.css";
+import { auth } from "./firebase";
+import add from "./screens/images/33ae441d41562169278c7308a29b2c59.png";
 
 function Navbar() {
   const [show, handleShow] = useState(false);
@@ -10,22 +12,14 @@ function Navbar() {
         handleShow(true);
       } else handleShow(false);
     });
-    return () => {
-      window.removeEventListener("scroll");
-    };
   }, []);
+
   return (
     <div className={`nav ${show && "nav__black"}`}>
-      <img
-        className="nav__logo"
-        src="https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg"
-        alt="Netflix logo"
-      />
-      <img
-        className="nav__avatar"
-        src="https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png"
-        alt="Netflix avatar"
-      />
+      <img className="nav__logo" src={add} alt="Netflix logo" />
+      <button type="Submit" onClick={() => auth.signOut()}>
+        Sign Out
+      </button>
     </div>
   );
 }
