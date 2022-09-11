@@ -1,27 +1,36 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./App.css";
-import Row from "./Row";
-import requests from "./requests";
-import Banner from "./Banner";
-import Navbar from "./Navbar";
+import HomeScreen from "./screens/HomeScreen";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import LoginScreen from "./screens/LoginScreen";
+import { auth } from "./firebase";
+import SignupScreen from "./screens/SignupScreen";
 
 function App() {
+  const users = null;
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((userAuth) => {
+      if (userAuth) {
+        console.log(userAuth);
+      } else {
+      }
+      return unsubscribe;
+    });
+  }, []);
   return (
     <div className="App">
-      <Navbar />
-      <Banner />
-      <Row
-        title="NETFLIX ORIGINALS"
-        fetchUrl={requests.fetchNetflixOriginals}
-        isLargeRow
-      />
-      <Row title="Trending Now" fetchUrl={requests.fetchTrending} />
-      <Row title="Top Rated" fetchUrl={requests.fetchTopRated} />
-      <Row title="Action Movies" fetchUrl={requests.fetchActionMovies} />
-      <Row title="Comedy Movies" fetchUrl={requests.fetchComedyMovies} />
-      <Row title="Horror Movies" fetchUrl={requests.fetchHorrorMovies} />
-      <Row title="Romance Movies" fetchUrl={requests.fetchRomanceMovies} />
-      <Row title="Documentaries" fetchUrl={requests.fetchDocumentaries} />
+      <Router>
+        {users ? (
+          <Switch>
+            <Route exact path="/">
+              <HomeScreen />
+            </Route>
+          </Switch>
+        ) : (
+          <LoginScreen />
+        )}
+      </Router>
     </div>
   );
 }
